@@ -1,32 +1,12 @@
-services:
-  redis:
-    image: redis:latest
-    platform: linux/amd64
-    command: redis-server --requirepass default
-    environment:
-      REDIS_USER: default
-      REDIS_PASSWORD: default
-    ports:
-      - "6380:6379"
-
-  postgres:
-    image: postgres:latest
-    platform: linux/amd64
-    environment:
-      POSTGRES_USER: default
-      POSTGRES_PASSWORD: default
-      POSTGRES_DB: default
-    ports:
-      - "5433:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql
-
-  n8n:
+n8n:
     image: n8nio/n8n:latest
     platform: linux/amd64
     environment:
-      WEBHOOK_URL: http://host.docker.internal:5678
-      N8N_HOST: host.docker.internal
+      # --- CORREÇÕES PARA PROXY REVERSO ---
+      WEBHOOK_URL: https://vizzusolu.duckdns.org/
+      N8N_PATH: /n8n/  # <--- NOVA VARIÁVEL: Força o N8N a usar o subcaminho
+      # N8N_HOST: host.docker.internal # <--- REMOVIDO / COMENTADO
+      # --- VARIÁVEIS ORIGINAIS MANTIDAS ---
       GENERIC_TIMEZONE: America/Sao_Paulo
       N8N_LOG_LEVEL: debug
       N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE: true
@@ -37,8 +17,3 @@ services:
       - "5678:5678"
     extra_hosts:
       - "host.docker.internal:host-gateway"
-
-volumes:
-  pgdata:
-  n8n_data:
-
