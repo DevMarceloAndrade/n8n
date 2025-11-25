@@ -33,7 +33,7 @@ services:
       N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE: true
       N8N_PACKAGES_INCLUDE: n8n-nodes-evolution-api
     volumes:
-      - n8n_data:/home/node/.n8n
+      - pgdata:/var/lib/postgresql
     ports:
       - "5678:5678"
     extra_hosts:
