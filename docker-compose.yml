@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   redis:
     image: redis:latest
@@ -9,7 +7,7 @@ services:
       REDIS_USER: default
       REDIS_PASSWORD: default
     ports:
-      - "6380:6379"
+      - "6379:6379"
 
   postgres:
     image: postgres:latest
@@ -19,29 +17,23 @@ services:
       POSTGRES_PASSWORD: default
       POSTGRES_DB: default
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql
+      - pgdata:/var/lib/postgresql/data
 
   n8n:
     image: n8nio/n8n:latest
     platform: linux/amd64
     environment:
-      # --- CORREÇÕES CRÍTICAS PARA PROXY REVERSO ---
-      WEBHOOK_URL: https://vizzusolu.duckdns.org/
-      N8N_PATH: /n8n/             # CRÍTICO: Informa ao N8N o prefixo do subcaminho
-      VUE_APP_BASE_URL: /n8n/      # FALLBACK: Para garantir que o frontend use o prefixo
-      N8N_HOST: 0.0.0.0            # Escutar em todas as interfaces internas
-      # --- VARIÁVEIS ORIGINAIS MANTIDAS ---
+      WEBHOOK_URL: http://host.docker.internal:5678
+      N8N_HOST: host.docker.internal
       GENERIC_TIMEZONE: America/Sao_Paulo
       N8N_LOG_LEVEL: debug
       N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE: true
-      N8N_PACKAGES_INCLUDE: n8n-nodes-evolution-api
     volumes:
       - n8n_data:/home/node/.n8n
     ports:
       - "5678:5678"
-    # extra_hosts removido para simplificar e evitar erros
 
 volumes:
   pgdata:
