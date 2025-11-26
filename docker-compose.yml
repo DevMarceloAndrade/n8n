@@ -2,11 +2,16 @@ n8n:
     image: n8nio/n8n:latest
     platform: linux/amd64
     environment:
-      # --- CORREÇÕES PARA PROXY REVERSO ---
+
       WEBHOOK_URL: https://vizzusolu.duckdns.org/
-      N8N_PATH: /n8n/  # <--- NOVA VARIÁVEL: Força o N8N a usar o subcaminho
-      # N8N_HOST: host.docker.internal # <--- REMOVIDO / COMENTADO
-      # --- VARIÁVEIS ORIGINAIS MANTIDAS ---
+      
+      N8N_PATH: /n8n/
+      
+      VUE_APP_BASE_URL: /n8n/
+      
+      N8N_HOST: 0.0.0.0
+      
+
       GENERIC_TIMEZONE: America/Sao_Paulo
       N8N_LOG_LEVEL: debug
       N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE: true
@@ -16,4 +21,3 @@ n8n:
     ports:
       - "5678:5678"
     extra_hosts:
-      - "host.docker.internal:host-gateway"
